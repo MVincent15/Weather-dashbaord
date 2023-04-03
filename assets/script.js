@@ -40,3 +40,57 @@ function todaysWeather(chosenCity) {
                 });
         });
 }; 
+
+var citySearchForm =$("#city-search-form");
+
+citySearchForm.on("submit", function(event) {
+    event.preventDefault();
+    
+    var chosenCity = $("#input-value").val();
+
+    todaysWeather(chosenCity);
+    fiveDayForecast(chosenCity);
+    
+});
+
+function fiveDayForecast(chosenCity) {
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + chosenCity + '&appid=' + APIkey ).then(function(response) {
+            return response.json();
+        })
+        .then(function(response) {
+            var longitude = response.coord.lon;
+            var latitiude = response.coord.lat;
+            
+            fetch('https://api.openweathermap.org/data/3.0/onecall?lat=' + latitiude + '&lon=' + longitude + '&appid=' + APIkey).then(function(response) {
+                    return response.json();
+                })
+                .then(function(response) {
+                    var fiveDayTitle = $("#five-day-title");
+                    fiveDayTitle.text("5-Day Forecast:")
+                    for (var i = 1; i < 6; i++) {
+                        var futureDay = $(".five-day-forecast");
+                        futureDay.addClass("five-day-card");
+
+                        var forecastDateJS = dayjs();
+                        var formattedForecastDate = forecastDateJS.format('MM/DD/YYYY');
+                        $("#forecast-date-" + i).text(formattedForecastDate);
+                        
+
+                        var forecastIcon = $("#forecast-icon-" + i);
+                        var forecastIconCode = response.daily[i].weather[0].icon;
+                        forecastIcon.attr("src", 'https://openweathermap.org/img/wn/' + forecastIconCode + '@2x.png');
+
+                        var forecastTemp = $("#forecast-temp-" + i);
+                        var fahrenheitTemp = Math.floor((response.daily[i].temp.day - 273.15) *(9/5) +32);
+                        forecastTemp.text("Temp: " + fahrenheitTemp + " \u00B0F");
+
+                        var forecastWind= $('#forecast-wind-' + i);
+                        forecastWind.text("Wind: " + response.daily[i].wind_speed + " MPH");
+
+                        var forecastHumidity = $("#forecast-humidity-" + i);
+                        forecastHumidity.text("Humidity: " + response.daily[i].humidity + "%");
+                        
+                    }
+                })
+        })
+};
