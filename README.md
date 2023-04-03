@@ -15,8 +15,7 @@ This website can be used to find the current or future weather for a given area.
 
 Here is the link to the live site: 
 
-
-
+https://mvincent15.github.io/Weather-dashbaord/
 
 ## Credits
 
