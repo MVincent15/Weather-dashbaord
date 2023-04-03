@@ -1,6 +1,18 @@
 
 var APIkey = "649629c11bc23683f8c08fdedb1644a4";
 
+var citySearchForm =$("#city-search-form");
+
+citySearchForm.on("submit", function(event) {
+    event.preventDefault();
+    
+    var chosenCity = $("#input-value").val();
+
+    todaysWeather(chosenCity);
+    fiveDayForecast(chosenCity);
+    
+});
+
 function todaysWeather(chosenCity) {
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + chosenCity + '&appid=' + APIkey )
         .then(function(response) {
@@ -17,7 +29,7 @@ function todaysWeather(chosenCity) {
                 .then(function(response){
                     searchHistory(chosenCity);
                     var cityTitle = $("#city-title");
-                    
+
                     var currentDate = dayjs();
                     var formattedDate = currentDate.format('(MM/DD/YYYY)');
                     $('#todays-date').text(formattedDate);
@@ -40,18 +52,6 @@ function todaysWeather(chosenCity) {
                 });
         });
 }; 
-
-var citySearchForm =$("#city-search-form");
-
-citySearchForm.on("submit", function(event) {
-    event.preventDefault();
-    
-    var chosenCity = $("#input-value").val();
-
-    todaysWeather(chosenCity);
-    fiveDayForecast(chosenCity);
-    
-});
 
 function fiveDayForecast(chosenCity) {
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + chosenCity + '&appid=' + APIkey ).then(function(response) {
@@ -132,6 +132,7 @@ function showSearchHistory() {
 };
 showSearchHistory();
 
+
 var searchHistorybtn = $("#search-history");
 
 searchHistorybtn.on("click", "p", function() {
@@ -139,3 +140,4 @@ searchHistorybtn.on("click", "p", function() {
     todaysWeather(previousCitySearch);
     fiveDayForecast(previousCitySearch);
 });
+

@@ -21,8 +21,18 @@
 
     <main class="container-fluid row page-content">
         <section class="col-sm-4 bg-light p-0">
-            
-            >
+            <div class="form-container search">
+                <form id="city-search-form">
+                    <div class="row m-0">
+                        <label for="input-value" class="search-label m-0 ">Search for a City:</label>
+                    </div>
+                    <input type="text" id="input-value" name="input-value" class="input-value">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary search-btn">Search</button>
+                    </div>
+                </form>
+            </div>
+            <div id="search-history" class="row m-0 search-history"> </div>
         </section>
         <section class="col-md-8 p-0">
             <div id="weather" class="row d-block">
