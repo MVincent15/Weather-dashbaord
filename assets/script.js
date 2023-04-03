@@ -94,3 +94,48 @@ function fiveDayForecast(chosenCity) {
                 })
         })
 };
+var savedHistory = [];
+
+function searchHistory(chosenCity) {
+    var searchHistoryInput = $("<p>");
+    var searchInput = $("<div>");
+    var searchHistoryEl = $("#search-history");
+    var inputValue = $("#input-value");
+
+    searchHistoryInput.addClass("past-search-history");
+    searchHistoryInput.text(chosenCity);
+    $('.past-search-history:contains("' + chosenCity + '")');
+
+
+    searchInput.addClass("past-search-history-container");
+    searchInput.append(searchHistoryInput);
+
+    searchHistoryEl.append(searchInput);
+    inputValue.val("");
+
+    savedHistory.push(chosenCity);
+    localStorage.setItem("savedHistory", JSON.stringify(savedHistory));
+
+    if (savedHistory.length > 0){
+        var previousSearch = localStorage.getItem("savedHistory");
+        savedHistory = JSON.parse(previousSearch);
+    }
+
+};
+
+function showSearchHistory() {
+    var savedSearchHistory = localStorage.getItem("savedHistory");
+    savedSearchHistory = JSON.parse(savedSearchHistory);
+    for (var i = 0; i < savedSearchHistory.length; i++) {
+        searchHistory(savedSearchHistory[i]);
+    }
+};
+showSearchHistory();
+
+var searchHistorybtn = $("#search-history");
+
+searchHistorybtn.on("click", "p", function() {
+    var previousCitySearch = $(this).text();
+    todaysWeather(previousCitySearch);
+    fiveDayForecast(previousCitySearch);
+});
